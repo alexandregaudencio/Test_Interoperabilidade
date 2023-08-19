@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<GatinhoData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Position>
+    <x>-0.113137119</x>
+    <y>-0.7862742</y>
+    <z>0</z>
+  </Position>
+  <Fliped>true</Fliped>
+</GatinhoData>

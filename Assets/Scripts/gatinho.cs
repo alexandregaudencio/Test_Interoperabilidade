@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -22,14 +23,16 @@ public class gatinho : MonoBehaviour
     SpriteRenderer SpriteRenderer;
     public int movementSpeed;
 
+    //public int collectedObjects = 0;
 
     public Savetype savetype;
-
-    [SerializeField] private GameObject panelImage;
+    [SerializeField] private CollectableSpawner collectableSpawner;
+    [SerializeField] private Transform bearTransform;
     [Header("Save Data")]
     [SerializeField] private GatinhoData gatinhodata;
 
-
+    public GatinhoData GatinhoData => gatinhodata;
+    public event Action<GatinhoData> OnGatinhoDataLoaded;
 
     void Awake()
     {
@@ -44,8 +47,10 @@ public class gatinho : MonoBehaviour
     }
     public void SaveData()
     {
-        gatinhodata.Position = transform.position;
-        gatinhodata.Fliped = SpriteRenderer.flipX;
+
+        GatinhoData.storageData(transform.position, SpriteRenderer.flipX);
+        GatinhoData.GafanhotoPositions = collectableSpawner.GafanhotosPositions();
+        GatinhoData.BearPosition = bearTransform.position;
 
         if (savetype == Savetype.json)
         {
@@ -90,6 +95,11 @@ public class gatinho : MonoBehaviour
 
         transform.position = gatinhodata.Position;
         SpriteRenderer.flipX = gatinhodata.Fliped;
+        bearTransform.position = gatinhodata.BearPosition;
+        
+
+        OnGatinhoDataLoaded(gatinhodata);
+
         
     }
 
@@ -135,12 +145,25 @@ public class gatinho : MonoBehaviour
     }
 
 
-    public void Pause()
-    {
-        panelImage.SetActive(!panelImage.activeSelf);
-        Time.timeScale = (Time.timeScale == 1) ? 0 : 1;
+    //public void Pause()
+    //{
+    //    panelImage.SetActive(!panelImage.activeSelf);
+    //    Time.timeScale = (Time.timeScale == 1) ? 0 : 1;
 
-        //float targetTimeScale = 1-  Mathf.Abs(Mathf.Cos(Time.timeScale * Mathf.PI));
-        //Time.timeScale = targetTimeScale;
+    //    //float targetTimeScale = 1-  Mathf.Abs(Mathf.Cos(Time.timeScale * Mathf.PI));
+    //    //Time.timeScale = targetTimeScale;
+    //}
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Collectable"))
+        {
+            collectableSpawner.RemoveGafanhoto(collision.gameObject);
+            Destroy(collision.gameObject);
+            //collectedObjects++;
+            gatinhodata.IncreaseScore();
+            
+        }
     }
 }

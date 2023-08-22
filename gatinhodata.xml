@@ -1,8 +1,14 @@
 <?xml version="1.0"?>
 <GatinhoData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <GafanhotoPositions>
+    <Vector2>
+      <x>2.97089529</x>
+      <y>2.39658618</y>
+    </Vector2>
+  </GafanhotoPositions>
   <Position>
-    <x>-0.113137119</x>
-    <y>-0.7862742</y>
+    <x>-0.711620569</x>
+    <y>-0.369359851</y>
     <z>0</z>
   </Position>
   <Fliped>true</Fliped>

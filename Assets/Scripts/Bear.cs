@@ -38,7 +38,8 @@ public class Bear : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             Destroy(collision.gameObject);
-            GetComponent<Animator>().enabled = false;   
+            GetComponent<Animator>().enabled = false;
+            rb2D.velocity = Vector2.zero;
         }
     }
 }

@@ -43,7 +43,16 @@ public class gatinho : MonoBehaviour
 
     private void Start()
     {
-        LoadData();
+        gatinhodata.SetScore(0);
+        //Debug.Log(Application.dataPath);
+        try
+        {
+            LoadData();
+
+        } catch
+        {
+
+        }
     }
     public void SaveData()
     {
@@ -55,8 +64,11 @@ public class gatinho : MonoBehaviour
         if (savetype == Savetype.json)
         {
             string jsonToData = JsonUtility.ToJson(gatinhodata);
-            //Debug.Log(jsonData);
-            File.WriteAllText(Application.persistentDataPath + "/GatinhoData.json", jsonToData);
+            File.WriteAllText("GatinhoData.json", jsonToData);
+            //XmlSerializer serializer = new XmlSerializer(typeof(GatinhoData));
+            //StreamWriter writer = new StreamWriter("GatinhoData.json");
+            //serializer.Serialize(writer.BaseStream, gatinhodata);
+            //writer.Close();
         }
 
         else if (savetype == Savetype.xml)
@@ -77,10 +89,15 @@ public class gatinho : MonoBehaviour
             try
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(GatinhoData));
+
                 StreamReader reader = new StreamReader("gatinhodata.xml");
+
                 gatinhodata = (GatinhoData)serializer.Deserialize(reader.BaseStream);
+                Debug.Log("gatinho: "+gatinhodata);
+
                 reader.Close();
-            } catch
+            }
+            catch
             {
 
             }
@@ -89,18 +106,29 @@ public class gatinho : MonoBehaviour
 
         else if (savetype == Savetype.json)
         {
-            string dataFromJson = File.ReadAllText(Application.persistentDataPath + "/GatinhoData.json");
+            //try
+            //{
+            //    XmlSerializer serializer = new XmlSerializer(typeof(GatinhoData));
+            //    StreamReader reader = new StreamReader("GatinhoData.json");
+            //    gatinhodata = (GatinhoData)serializer.Deserialize(reader.BaseStream);
+            //    reader.Close();
+            //}
+            //catch
+            //{
+
+            //}
+            string dataFromJson = File.ReadAllText("GatinhoData.json");
             gatinhodata = JsonUtility.FromJson<GatinhoData>(dataFromJson);
         }
 
         transform.position = gatinhodata.Position;
         SpriteRenderer.flipX = gatinhodata.Fliped;
         bearTransform.position = gatinhodata.BearPosition;
-        
+
 
         OnGatinhoDataLoaded(gatinhodata);
 
-        
+
     }
 
     // Update is called once per frame
@@ -111,7 +139,7 @@ public class gatinho : MonoBehaviour
         Vector2 movementInput = new Vector2(horizontalInput, verticalInput).normalized;
         Rigidbody2D.velocity = movementInput * movementSpeed * Time.fixedDeltaTime;
 
-      
+
         animator.SetBool("velocityMag", Rigidbody2D.velocity.magnitude > 1);
 
 
@@ -157,13 +185,13 @@ public class gatinho : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.CompareTag("Collectable"))
+        if (collision.gameObject.CompareTag("Collectable"))
         {
             collectableSpawner.RemoveGafanhoto(collision.gameObject);
             Destroy(collision.gameObject);
             //collectedObjects++;
             gatinhodata.IncreaseScore();
-            
+
         }
     }
 }

@@ -10,8 +10,9 @@ public class GatinhoData
 {
     [SerializeField] private Vector3 position = Vector3.zero;
     [SerializeField] private bool fliped = false;
-    [SerializeField] private float score;
+    public float score = 0;
     [SerializeField] private Vector3 bearPosition = Vector3.zero;
+    public List<Vector2> GafanhotoPositions;
 
 
     public event Action<float> ScoreChange;
@@ -21,7 +22,6 @@ public class GatinhoData
 
     public Vector3 BearPosition { get => bearPosition; set => bearPosition = value; }
 
-    public List<Vector2> GafanhotoPositions; 
 
 
     public void SetScore(int value)
